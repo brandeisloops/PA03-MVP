@@ -82,9 +82,9 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
 			// create the ground and the skybox
-			var ground = createGround('grass.png');
+			var ground = createGround('white.jpg');
 			scene.add(ground);
-			var skybox = createSkyBox('sky.jpg',1);
+			var skybox = createSkyBox('snow1.jpg',1);
 			scene.add(skybox);
 
 			// create the avatar
@@ -101,12 +101,37 @@ The user moves a cube around the board trying to knock balls into a cone
 			cone = createConeMesh(4,6);
 			cone.position.set(10,3,7);
 			//scene.add(cone);
+		
+			roadBlock1 = createStaticRoadBlock();
+			roadBlock1.position.set(-15,0,-15);
+			scene.add(roadBlock1);
 
+			roadBlock2 = createStaticRoadBlock();
+			roadBlock2.position.set(40,0,20);
+			roadBlock2.rotateY(Math.PI/7);
+			scene.add(roadBlock2);
+
+			roadBlock3 = createStaticRoadBlock();
+			roadBlock3.position.set(-30,0,20);
+			roadBlock3.rotateY(Math.PI/3);
+			scene.add(roadBlock3);
+
+			roadBlock4 = createStaticRoadBlock();
+			roadBlock4.position.set(30,0,-20);
+			roadBlock4.rotateY(Math.PI/2);
+			scene.add(roadBlock4);
 
 			//playGameMusic();
 
 	}
 
+	function createStaticRoadBlock(){
+		var geometry = new THREE.BoxGeometry( 2, 10, 30);
+		var material = new THREE.MeshLambertMaterial( { color: 0x000000} );
+		mesh = new Physijs.BoxMesh( geometry, material,0 );
+		mesh.castShadow = true;
+		return mesh;
+	}
 
 	function randN(n){
 		return Math.random()*n;
