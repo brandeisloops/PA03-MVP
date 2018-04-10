@@ -97,6 +97,10 @@ The user moves a cube around the board trying to knock balls into a cone
 			gameState.camera = avatarCam;
 
 			addBalls();
+        
+            var bear = createBearMesh();
+            bear.position.set(20, 5, 0);
+            scene.add(bear);
 
 			cone = createConeMesh(4,6);
 			cone.position.set(10,3,7);
@@ -166,8 +170,6 @@ The user moves a cube around the board trying to knock balls into a cone
 			)
 		}
 	}
-
-
 
 	function playGameMusic(){
 		// create an AudioListener and add it to the camera
@@ -313,6 +315,17 @@ The user moves a cube around the board trying to knock balls into a cone
         //var geometry = new THREE.SphereGeometry( 4, 20, 20);
 		var geometry = new THREE.BoxGeometry( 5, 5, 6);
 		var material = new THREE.MeshLambertMaterial( { color: 0xffff00} );
+		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
+		//var mesh = new THREE.Mesh( geometry, material );
+		var mesh = new Physijs.BoxMesh( geometry, pmaterial );
+		mesh.setDamping(0.1,0.1);
+		mesh.castShadow = true;
+        return mesh;
+    }
+
+    function createBearMesh(){
+        var geometry = new THREE.BoxGeometry( 5, 5, 6);
+		var material = new THREE.MeshLambertMaterial( { color: 0xff0000} );
 		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
 		//var mesh = new THREE.Mesh( geometry, material );
 		var mesh = new Physijs.BoxMesh( geometry, pmaterial );
