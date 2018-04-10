@@ -42,7 +42,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	function createEndScene(){
 		endScene = initScene();
-		endText = createSkyBox('youwon.png',10);
+		endText = createSkyBox('chouchou.JPG',1);
 		//endText.rotateX(Math.PI);
 		endScene.add(endText);
 		var light1 = createPointLight();
@@ -101,6 +101,8 @@ The user moves a cube around the board trying to knock balls into a cone
             var bear = createBearMesh();
             bear.position.set(20, 5, 0);
             scene.add(bear);
+        
+            
 
 			cone = createConeMesh(4,6);
 			cone.position.set(10,3,7);
@@ -283,9 +285,6 @@ The user moves a cube around the board trying to knock balls into a cone
 		// creating a textured plane which receives shadows
 		var geometry = new THREE.SphereGeometry( 80, 80, 80 );
 		var texture = new THREE.TextureLoader().load( '../images/'+image );
-		texture.wrapS = THREE.RepeatWrapping;
-		texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set( k, k );
 		var material = new THREE.MeshLambertMaterial( { color: 0xffffff,  map: texture ,side:THREE.DoubleSide} );
 		//var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
 		//var mesh = new THREE.Mesh( geometry, material );
