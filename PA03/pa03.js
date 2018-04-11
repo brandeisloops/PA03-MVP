@@ -42,7 +42,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	function createWinScene(){
 		winScene = initScene();
-		winText = createSkyBox('chouchou.JPG',1);
+		winText = createEndScreen('chouchou.JPG');
 		//endText.rotateX(Math.PI);
 		winScene.add(winText);
 		var light1 = createPointLight();
@@ -56,14 +56,14 @@ The user moves a cube around the board trying to knock balls into a cone
 
     function createLoseScene(){
 		loseScene = initScene();
-		loseText = createSkyBox('chouchou.JPG',1);
+		loseText = createEndScreen('polarbear.jpg');
 		//endText.rotateX(Math.PI);
 		loseScene.add(loseText);
 		var light2 = createPointLight();
 		light2.position.set(0,200,20);
 		loseScene.add(light2);
 		loseCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		loseCamera.position.set(0,50,1);
+		loseCamera.position.set(0,80,1);
 		loseCamera.lookAt(0,0,0);
 
 	}
@@ -373,6 +373,25 @@ The user moves a cube around the board trying to knock balls into a cone
 		// we need to rotate the mesh 90 degrees to make it horizontal not vertical
 	}
 
+    function createEndScreen(image){
+		// creating a textured plane which receives shadows
+		var geometry = new THREE.PlaneGeometry( 180, 180, 128 );
+		var texture = new THREE.TextureLoader().load( '../images/'+image );
+		var material = new THREE.MeshLambertMaterial( { color: 0xffffff,  map: texture ,side:THREE.DoubleSide} );
+		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
+		//var mesh = new THREE.Mesh( geometry, material );
+		var mesh = new Physijs.BoxMesh( geometry, pmaterial, 0 );
+
+		mesh.receiveShadow = false;
+
+		mesh.rotateX(Math.PI/2);
+        mesh.rotateZ(Math.PI);
+        mesh.rotateY(Math.PI);
+		return mesh
+		// we need to rotate the mesh 90 degrees to make it horizontal not vertical
+	
+    }
+
 
 
 	function createSkyBox(image,k){
@@ -418,7 +437,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
     function createBearMesh(){
         var geometry = new THREE.BoxGeometry( 5, 5, 6);
-		var material = new THREE.MeshLambertMaterial( { color: 0xff0000} );
+		var material = new THREE.MeshLambertMaterial( { color: 0xffffff} );
 		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
 		//var mesh = new THREE.Mesh( geometry, material );
 		var mesh = new Physijs.BoxMesh( geometry, pmaterial );
@@ -458,10 +477,9 @@ The user moves a cube around the board trying to knock balls into a cone
 		console.log("Keydown:"+event.key);
 		//console.dir(event);
 		// first we handle the "play again" key in the "youwon" scene
-		if (gameState.scene == 'youwon' && event.key=='r') {
+		if ((gameState.scene == 'youwon' || gameState.scene == 'youlose') && event.key=='r') {
 			gameState.scene = 'main';
 			gameState.score = 0;
-			addBalls();
 			return;
 		}
 
