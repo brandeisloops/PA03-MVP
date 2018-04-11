@@ -211,7 +211,7 @@ The user moves a cube around the board trying to knock balls into a cone
     
         
             var bear = createBearMesh();
-            bear.position.set(20, 5, 0);
+            bear.position.set(35, 5, 0);
             scene.add(bear);
             bear.addEventListener( 'collision',
 				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
@@ -563,7 +563,6 @@ The user moves a cube around the board trying to knock balls into a cone
 		"change the avatar's linear or angular velocity based on controls state (set by WSAD key presses)"
 
 		var forward = avatar.getWorldDirection();
-
 		if (controls.fwd){
 			avatar.setLinearVelocity(forward.multiplyScalar(controls.speed));
 		} else if (controls.bwd){
