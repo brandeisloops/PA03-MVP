@@ -19,7 +19,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	var endScene, endCamera, endText;
 
-
+    var numPenguins = 4;
 
 
 
@@ -112,7 +112,78 @@ The user moves a cube around the board trying to knock balls into a cone
 			gameState.camera = avatarCam;
 
 			
-            addBalls();
+            //addBalls();
+        
+            var investigated1 = false;
+            var penguin1 = createPenguinMesh();
+			penguin1.position.set(randN(20)+Math.pow(-1,Math.floor(0/2))*25,5,randN(20)+Math.pow(-1,0+1)*25);
+			scene.add(penguin1);
+			penguin1.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated1){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated1 = true;
+					}
+				}
+			)
+        
+            var investigated2 = false;
+            var penguin2 = createPenguinMesh();
+			penguin2.position.set(randN(20)+Math.pow(-1,Math.floor(1/2))*25,5,randN(20)+Math.pow(-1,1+1)*25);
+			scene.add(penguin2);
+
+			penguin2.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated2){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated2 = true;
+					}
+				}
+			)
+        
+            var investigated3 = false;
+            var penguin3 = createPenguinMesh();
+			penguin3.position.set(randN(20)+Math.pow(-1,Math.floor(2/2))*25,5,randN(20)+Math.pow(-1,2+1)*25);
+			scene.add(penguin3);
+
+			penguin3.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated3){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated3 = true;
+					}
+				}
+			)
+        
+            var investigated4 = false;
+            var penguin4 = createPenguinMesh();
+			penguin4.position.set(randN(20)+Math.pow(-1,Math.floor(3/2))*25,5,randN(20)+Math.pow(-1,3+1)*25);
+			scene.add(penguin4);
+
+			penguin4.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated4){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated4 = true;
+					}
+				}
+			)
     
         
             var bear = createBearMesh();
@@ -171,7 +242,6 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
 	function addBalls(){
-		var numPenguins = 4
 
 
 		for(i=0;i<numPenguins;i++){
