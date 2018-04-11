@@ -40,17 +40,31 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
 
-	function createEndScene(){
-		endScene = initScene();
-		endText = createSkyBox('chouchou.JPG',1);
+	function createWinScene(){
+		winScene = initScene();
+		winText = createSkyBox('chouchou.JPG',1);
 		//endText.rotateX(Math.PI);
-		endScene.add(endText);
+		winScene.add(winText);
 		var light1 = createPointLight();
 		light1.position.set(0,200,20);
-		endScene.add(light1);
-		endCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		endCamera.position.set(0,50,1);
-		endCamera.lookAt(0,0,0);
+		winScene.add(light1);
+		winCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		winCamera.position.set(0,50,1);
+		winCamera.lookAt(0,0,0);
+
+	}
+
+    function createLoseScene(){
+		loseScene = initScene();
+		loseText = createSkyBox('chouchou.JPG',1);
+		//endText.rotateX(Math.PI);
+		loseScene.add(loseText);
+		var light2 = createPointLight();
+		light2.position.set(0,200,20);
+		loseScene.add(light2);
+		loseCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		loseCamera.position.set(0,50,1);
+		loseCamera.lookAt(0,0,0);
 
 	}
 
@@ -60,7 +74,8 @@ The user moves a cube around the board trying to knock balls into a cone
 	function init(){
       initPhysijs();
 			scene = initScene();
-			createEndScene();
+			createWinScene();
+            createLoseScene();
 			initRenderer();
 			createMainScene();
 	}
@@ -96,11 +111,20 @@ The user moves a cube around the board trying to knock balls into a cone
 			scene.add(avatar);
 			gameState.camera = avatarCam;
 
-			addBalls();
+			
+            addBalls();
+    
         
             var bear = createBearMesh();
             bear.position.set(20, 5, 0);
             scene.add(bear);
+            bear.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar){
+						gameState.scene = "youlose";  // add one to the score		
+					}
+				}
+			);
         
             
 
@@ -459,11 +483,15 @@ The user moves a cube around the board trying to knock balls into a cone
 		switch(gameState.scene) {
 
 			case "youwon":
-				endText.rotateY(0.005);
-				renderer.render( endScene, endCamera );
+				renderer.render( winScene, winCamera );
 				break;
+                
+            case "youlose":
+                renderer.render(loseScene, loseCamera);
+                break;
 
-			case "main":
+            
+            case "main":
 				updateAvatar();
 	    	scene.simulate();
 				if (gameState.camera!= 'none'){
