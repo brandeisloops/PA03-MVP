@@ -42,14 +42,14 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	function createWinScene(){
 		winScene = initScene();
-		winText = createEndScreen('chouchou.JPG');
+		winText = createEndScreen('penguin.jpg');
 		//endText.rotateX(Math.PI);
 		winScene.add(winText);
 		var light1 = createPointLight();
 		light1.position.set(0,200,20);
 		winScene.add(light1);
 		winCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		winCamera.position.set(0,50,1);
+		winCamera.position.set(0,80,1);
 		winCamera.lookAt(0,0,0);
 
 	}
