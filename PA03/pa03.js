@@ -16,6 +16,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	var cone;
 
+	var startScene, startCamera, startPlane;
 
 	var endScene, endCamera, endText;
 
@@ -29,7 +30,7 @@ The user moves a cube around the board trying to knock balls into a cone
 		    camera:camera}
 
 	var gameState =
-	     {score:0, health:10, scene:'main', camera:'none' }
+	     {score:0, health:10, scene:'thestart', camera:'none' }
 
 
 	// Here is the main game control
@@ -38,7 +39,29 @@ The user moves a cube around the board trying to knock balls into a cone
 	animate();  // start the animation loop!
 
 
+	function createStartScene(){
+		startScene = initScene();
 
+		var geometry = new THREE.PlaneGeometry( 40, 30, 128 );
+		var texture = new THREE.TextureLoader().load( '../images/startmenu.png' );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.set( 1, 1 );
+		var material = new THREE.MeshLambertMaterial( { color: 0xffffff,  map: texture ,side:THREE.DoubleSide} );
+		startPlane = new THREE.Mesh( geometry, material );
+
+		startScene.add(startPlane);
+		var light1 = createPointLight();
+		var light2 = createPointLight();
+		light1.position.set(5,0,10);
+		light2.position.set(-5,0,10);
+		startScene.add(light1);
+		startScene.add(light2);
+		startCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		startCamera.position.set(0,0,15);
+		startCamera.lookAt(0,0,0);
+
+	}
 
 	function createWinScene(){
 		winScene = initScene();
@@ -74,6 +97,7 @@ The user moves a cube around the board trying to knock balls into a cone
 	function init(){
       initPhysijs();
 			scene = initScene();
+			createStartScene()
 			createWinScene();
             createLoseScene();
 			initRenderer();
@@ -482,6 +506,11 @@ The user moves a cube around the board trying to knock balls into a cone
 			gameState.score = 0;
 			return;
 		}
+		
+		if (gameState.scene == 'thestart' && event.key=='p') {
+			gameState.scene = 'main';
+			return;
+		}
 
 		// this is the regular scene
 		switch (event.key){
@@ -572,6 +601,10 @@ The user moves a cube around the board trying to knock balls into a cone
 
 			case "youwon":
 				renderer.render( winScene, winCamera );
+				break;
+				
+			case "thestart":
+				renderer.render( startScene, startCamera );
 				break;
                 
             case "youlose":
