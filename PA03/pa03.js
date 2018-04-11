@@ -116,7 +116,7 @@ The user moves a cube around the board trying to knock balls into a cone
         
             var investigated1 = false;
             var penguin1 = createPenguinMesh();
-			penguin1.position.set(randN(20)+Math.pow(-1,Math.floor(0/2))*25,5,randN(20)+Math.pow(-1,0+1)*25);
+			penguin1.position.set(25,5,25);
 			scene.add(penguin1);
 			penguin1.addEventListener( 'collision',
 				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
@@ -133,7 +133,7 @@ The user moves a cube around the board trying to knock balls into a cone
         
             var investigated2 = false;
             var penguin2 = createPenguinMesh();
-			penguin2.position.set(randN(20)+Math.pow(-1,Math.floor(1/2))*25,5,randN(20)+Math.pow(-1,1+1)*25);
+			penguin2.position.set(25,5,-25);
 			scene.add(penguin2);
 
 			penguin2.addEventListener( 'collision',
@@ -151,7 +151,7 @@ The user moves a cube around the board trying to knock balls into a cone
         
             var investigated3 = false;
             var penguin3 = createPenguinMesh();
-			penguin3.position.set(randN(20)+Math.pow(-1,Math.floor(2/2))*25,5,randN(20)+Math.pow(-1,2+1)*25);
+			penguin3.position.set(-25,5,30);
 			scene.add(penguin3);
 
 			penguin3.addEventListener( 'collision',
@@ -169,7 +169,7 @@ The user moves a cube around the board trying to knock balls into a cone
         
             var investigated4 = false;
             var penguin4 = createPenguinMesh();
-			penguin4.position.set(randN(20)+Math.pow(-1,Math.floor(3/2))*25,5,randN(20)+Math.pow(-1,3+1)*25);
+			penguin4.position.set(-25,5,-25);
 			scene.add(penguin4);
 
 			penguin4.addEventListener( 'collision',
