@@ -447,7 +447,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 		function addPenguinOBJ(){
 			var loader = new THREE.OBJLoader();
-			loader.load("../models/suzanne.obj",
+			loader.load("../models/PenguinB.obj",
 						function ( obj) {
 							console.log("loading obj file");
 							console.dir(obj);
