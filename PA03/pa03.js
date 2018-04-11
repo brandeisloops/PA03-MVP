@@ -19,7 +19,7 @@ The user moves a cube around the board trying to knock balls into a cone
 
 	var endScene, endCamera, endText;
 
-
+    var numPenguins = 4;
 
 
 
@@ -40,17 +40,31 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
 
-	function createEndScene(){
-		endScene = initScene();
-		endText = createSkyBox('youwon.png',10);
+	function createWinScene(){
+		winScene = initScene();
+		winText = createSkyBox('chouchou.JPG',1);
 		//endText.rotateX(Math.PI);
-		endScene.add(endText);
+		winScene.add(winText);
 		var light1 = createPointLight();
 		light1.position.set(0,200,20);
-		endScene.add(light1);
-		endCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
-		endCamera.position.set(0,50,1);
-		endCamera.lookAt(0,0,0);
+		winScene.add(light1);
+		winCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		winCamera.position.set(0,50,1);
+		winCamera.lookAt(0,0,0);
+
+	}
+
+    function createLoseScene(){
+		loseScene = initScene();
+		loseText = createSkyBox('chouchou.JPG',1);
+		//endText.rotateX(Math.PI);
+		loseScene.add(loseText);
+		var light2 = createPointLight();
+		light2.position.set(0,200,20);
+		loseScene.add(light2);
+		loseCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		loseCamera.position.set(0,50,1);
+		loseCamera.lookAt(0,0,0);
 
 	}
 
@@ -60,7 +74,8 @@ The user moves a cube around the board trying to knock balls into a cone
 	function init(){
       initPhysijs();
 			scene = initScene();
-			createEndScene();
+			createWinScene();
+            createLoseScene();
 			initRenderer();
 			createMainScene();
 	}
@@ -96,11 +111,93 @@ The user moves a cube around the board trying to knock balls into a cone
 			scene.add(avatar);
 			gameState.camera = avatarCam;
 
-			addBalls();
+			
+            //addBalls();
+        
+            var investigated1 = false;
+            var penguin1 = createPenguinMesh();
+			penguin1.position.set(randN(20)+Math.pow(-1,Math.floor(0/2))*25,5,randN(20)+Math.pow(-1,0+1)*25);
+			scene.add(penguin1);
+			penguin1.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated1){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated1 = true;
+					}
+				}
+			)
+        
+            var investigated2 = false;
+            var penguin2 = createPenguinMesh();
+			penguin2.position.set(randN(20)+Math.pow(-1,Math.floor(1/2))*25,5,randN(20)+Math.pow(-1,1+1)*25);
+			scene.add(penguin2);
+
+			penguin2.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated2){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated2 = true;
+					}
+				}
+			)
+        
+            var investigated3 = false;
+            var penguin3 = createPenguinMesh();
+			penguin3.position.set(randN(20)+Math.pow(-1,Math.floor(2/2))*25,5,randN(20)+Math.pow(-1,2+1)*25);
+			scene.add(penguin3);
+
+			penguin3.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated3){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated3 = true;
+					}
+				}
+			)
+        
+            var investigated4 = false;
+            var penguin4 = createPenguinMesh();
+			penguin4.position.set(randN(20)+Math.pow(-1,Math.floor(3/2))*25,5,randN(20)+Math.pow(-1,3+1)*25);
+			scene.add(penguin4);
+
+			penguin4.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar && !investigated4){
+						soundEffect('good.wav');
+						gameState.score += 1;  // add one to the score
+						if (gameState.score==numPenguins) {
+							gameState.scene='youwon';
+						}
+						investigated4 = true;
+					}
+				}
+			)
+    
         
             var bear = createBearMesh();
             bear.position.set(20, 5, 0);
             scene.add(bear);
+            bear.addEventListener( 'collision',
+				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+					if (other_object==avatar){
+						gameState.scene = "youlose";  // add one to the score		
+					}
+				}
+			);
+        
+            
 
 			cone = createConeMesh(4,6);
 			cone.position.set(10,3,7);
@@ -145,7 +242,6 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
 	function addBalls(){
-		var numPenguins = 4
 
 
 		for(i=0;i<numPenguins;i++){
@@ -283,9 +379,6 @@ The user moves a cube around the board trying to knock balls into a cone
 		// creating a textured plane which receives shadows
 		var geometry = new THREE.SphereGeometry( 80, 80, 80 );
 		var texture = new THREE.TextureLoader().load( '../images/'+image );
-		texture.wrapS = THREE.RepeatWrapping;
-		texture.wrapT = THREE.RepeatWrapping;
-		texture.repeat.set( k, k );
 		var material = new THREE.MeshLambertMaterial( { color: 0xffffff,  map: texture ,side:THREE.DoubleSide} );
 		//var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
 		//var mesh = new THREE.Mesh( geometry, material );
@@ -460,11 +553,15 @@ The user moves a cube around the board trying to knock balls into a cone
 		switch(gameState.scene) {
 
 			case "youwon":
-				endText.rotateY(0.005);
-				renderer.render( endScene, endCamera );
+				renderer.render( winScene, winCamera );
 				break;
+                
+            case "youlose":
+                renderer.render(loseScene, loseCamera);
+                break;
 
-			case "main":
+            
+            case "main":
 				updateAvatar();
 	    	scene.simulate();
 				if (gameState.camera!= 'none'){
