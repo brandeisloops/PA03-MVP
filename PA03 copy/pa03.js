@@ -488,7 +488,7 @@ The user moves a cube around the board trying to knock balls into a cone
 								avatar.add(penguin)
 							}
 							avatar.position.set(0,5,0);
-							avatarCam.position.set(0,10,-5);
+							avatarCam.position.set(0,16,-8);
 							avatarCam.lookAt(0,4,10);
 							avatar.add(avatarCam);
 
