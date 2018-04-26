@@ -11,7 +11,7 @@ The user moves a cube around the board trying to knock balls into a cone
 	// in the animation code
 	var scene, renderer;  // all threejs programs need these
 	var camera, avatarCam;  // we have two cameras in the main scene
-	var avatar;
+	var avatar, bear;
 	// here are some mesh objects ...
 
 	var cone;
@@ -235,16 +235,7 @@ The user moves a cube around the board trying to knock balls into a cone
 			gameState.camera = avatarCam;
 
 
-            var bear = createBearMesh();
-            bear.position.set(35, 5, 0);
-            scene.add(bear);
-            bear.addEventListener( 'collision',
-				function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-					if (other_object==avatar){
-						gameState.scene = "youlose";  // add one to the score
-					}
-				}
-			);
+            bear = createBearMesh();
 
 
 
@@ -484,17 +475,25 @@ The user moves a cube around the board trying to knock balls into a cone
 							console.dir(obj);
 							obj.castShadow = true;
 							penguinAvatarOBJ = obj;
+							
+							
 							var geometry = penguinAvatarOBJ.children[0].geometry;
 							var material = penguinAvatarOBJ.children[0].material;
-							penguinAvatarOBJ = new Physijs.BoxMesh(geometry,material);
-							penguinAvatarOBJ.position.set(0,5,0);
-
+							avatar = new Physijs.BoxMesh(geometry,material)
+								
+							for(var i=1; i<penguinAvatarOBJ.children.length; i++){
+								var geometry = penguinAvatarOBJ.children[i].geometry;
+								var material = penguinAvatarOBJ.children[i].material;
+								var penguin = new Physijs.BoxMesh(geometry,material);
+								avatar.add(penguin)
+							}
+							avatar.position.set(0,5,0);
 							avatarCam.position.set(0,10,-5);
 							avatarCam.lookAt(0,4,10);
-							penguinAvatarOBJ.add(avatarCam);
+							avatar.add(avatarCam);
 
-							scene.add(penguinAvatarOBJ);
-							avatar = penguinAvatarOBJ;
+							scene.add(avatar);
+//							avatar = penguinAvatarOBJ;
 							console.log("just added penguinAvatarOBJ");
 
 							//
@@ -675,15 +674,50 @@ The user moves a cube around the board trying to knock balls into a cone
         return mesh;
     }
 
+	var bearCop
     function createBearMesh(){
-        var geometry = new THREE.BoxGeometry( 5, 5, 6);
-		var material = new THREE.MeshLambertMaterial( { color: 0xffffff} );
-		var pmaterial = new Physijs.createMaterial(material,0.9,0.5);
-		//var mesh = new THREE.Mesh( geometry, material );
-		var mesh = new Physijs.BoxMesh( geometry, pmaterial );
-		mesh.setDamping(0.1,0.1);
-		mesh.castShadow = true;
-        return mesh;
+		var loader = new THREE.OBJLoader();
+			loader.load("../models/PolarBear3.obj",
+						function ( obj) {
+							console.log("loading obj file");
+							console.dir(obj);
+							obj.castShadow = true;
+							bearCop = obj;
+							
+							
+							var geometry = bearCop.children[0].geometry;
+							var material = bearCop.children[0].material;
+							bear = new Physijs.BoxMesh(geometry,material)
+								
+							for(var i=1; i<bearCop.children.length; i++){
+								var geometry = bearCop.children[i].geometry;
+								var material = bearCop.children[i].material;
+								var penguin = new Physijs.BoxMesh(geometry,material);
+								bear.add(penguin)
+							}
+							bear.position.set(35, 5, 0);
+
+							bear.addEventListener( 'collision',
+								function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+									if (other_object==avatar){
+										gameState.scene = "youlose";  // add one to the score
+									}
+								}
+							)
+							
+							scene.add(bear);
+//							avatar = penguinAvatarOBJ;
+							console.log("just added bearCop");
+
+							//
+						},
+						function(xhr){
+							console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+
+						function(err){
+							console.log("error in loading: "+err);}
+					)
+					return bear;
     }
 
 
