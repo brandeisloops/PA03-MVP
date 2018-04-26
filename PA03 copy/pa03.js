@@ -27,7 +27,7 @@ The user moves a cube around the board trying to knock balls into a cone
 	var controls =
 	     {fwd:false, bwd:false, left:false, right:false,
 				speed:10, fly:false, reset:false,
-		    camera:camera}
+		    camera:camera, p1:false, p2:false, p3:false, p4: false}
 
 	var gameState =
 	     {score:0, health:10, scene:'thestart', camera:'none' }
@@ -60,6 +60,20 @@ The user moves a cube around the board trying to knock balls into a cone
 		startCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 		startCamera.position.set(0,0,15);
 		startCamera.lookAt(0,0,0);
+
+	}
+
+	function createWhichScene(){
+		whichScene = initScene();
+		whichText = createEndScreen('whichpenguin.jpg');
+		//endText.rotateX(Math.PI);
+		whichScene.add(whichText);
+		var light1 = createPointLight();
+		light1.position.set(0,200,20);
+		whichScene.add(light1);
+		whichCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		whichCamera.position.set(0,80,1);
+		whichCamera.lookAt(0,0,0);
 
 	}
 
@@ -98,6 +112,7 @@ The user moves a cube around the board trying to knock balls into a cone
       initPhysijs();
 			scene = initScene();
 			createStartScene()
+			createWhichScene();
 			createWinScene();
             createLoseScene();
 			initRenderer();
@@ -139,7 +154,7 @@ The user moves a cube around the board trying to knock balls into a cone
 						soundEffect('good.wav');
 						gameState.score += 1;  // add one to the score
 						if (gameState.score==numPenguins) {
-							gameState.scene='youwon';
+							gameState.scene='decide';
 						}
 						investigated1 = true;
 					}
@@ -157,7 +172,7 @@ The user moves a cube around the board trying to knock balls into a cone
 						soundEffect('good.wav');
 						gameState.score += 1;  // add one to the score
 						if (gameState.score==numPenguins) {
-							gameState.scene='youwon';
+							gameState.scene='decide';
 						}
 						investigated2 = true;
 					}
@@ -175,7 +190,7 @@ The user moves a cube around the board trying to knock balls into a cone
 						soundEffect('good.wav');
 						gameState.score += 1;  // add one to the score
 						if (gameState.score==numPenguins) {
-							gameState.scene='youwon';
+							gameState.scene='decide';
 						}
 						investigated3 = true;
 					}
@@ -193,7 +208,7 @@ The user moves a cube around the board trying to knock balls into a cone
 						soundEffect('good.wav');
 						gameState.score += 1;  // add one to the score
 						if (gameState.score==numPenguins) {
-							gameState.scene='youwon';
+							gameState.scene='decide';
 						}
 						investigated4 = true;
 					}
@@ -275,7 +290,7 @@ The user moves a cube around the board trying to knock balls into a cone
 						soundEffect('good.wav');
 						gameState.score += 1;  // add one to the score
 						if (gameState.score==numPenguins) {
-							gameState.scene='youwon';
+							gameState.scene='decide';
 						}
 						// make the ball drop below the scene ..
 						// threejs doesn't let us remove it from the schene...
@@ -530,9 +545,13 @@ The user moves a cube around the board trying to knock balls into a cone
 		console.log("Keydown:"+event.key);
 		//console.dir(event);
 		// first we handle the "play again" key in the "youwon" scene
-		if ((gameState.scene == 'youwon' || gameState.scene == 'youlose') && event.key=='r') {
+		if ((gameState.scene == 'decide' || gameState.scene == 'youlose' || gameState.scene == 'youwin') && event.key=='r') {
 			gameState.scene = 'main';
 			gameState.score = 0;
+			investigated1 = false;
+			investigated2 = false;
+			investigated3 = false;
+			investigated4 = false;
 			return;
 		}
 
@@ -554,10 +573,15 @@ The user moves a cube around the board trying to knock balls into a cone
       case " ": controls.fly = true; break;
       case "h": controls.reset = true; break;
 
-
+			case "1": gameState.scene = "youlose"; break;
+			case "2": gameState.scene = "youlose"; break;
+			case "3": gameState.scene = "youwin"; break;
+			case "4": gameState.scene = "youlose"; break;
+			
 			// switch cameras
-			case "1": gameState.camera = camera; break;
-			case "2": gameState.camera = avatarCam; break;
+			case "9": gameState.camera = camera; break;
+			case "0": gameState.camera = avatarCam; break;
+
 
 			// move the camera around, relative to the avatar
 			case "ArrowLeft": avatarCam.translateY(1);break;
@@ -627,8 +651,12 @@ The user moves a cube around the board trying to knock balls into a cone
 
 		switch(gameState.scene) {
 
-			case "youwon":
-				renderer.render( winScene, winCamera );
+			case "decide":
+				renderer.render( whichScene, whichCamera );
+				break;
+			
+			case "youwin":
+				renderer.render(winScene, winCamera);
 				break;
 
 			case "thestart":
