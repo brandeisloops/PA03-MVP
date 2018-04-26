@@ -33,6 +33,15 @@ The user moves a cube around the board trying to knock balls into a cone
 	     {score:0, health:10, scene:'thestart', camera:'none' }
 
 
+	var investigated1 = false;
+	var penguin1;
+	var investigated2 = false;
+	var penguin2;
+	var investigated3 = false;
+	var penguin3;
+	var investigated4 = false;
+	var penguin4;
+
 	// Here is the main game control
   init(); //
 	initControls();
@@ -143,7 +152,12 @@ The user moves a cube around the board trying to knock balls into a cone
 
 
             //addBalls();
+	    addQM1();
+            addQM2();
+            addQM3();
+            addQM4();
 
+	/*
             var investigated1 = false;
 						var penguin1 = createPenguinMesh();
 			penguin1.position.set(25,5,25);
@@ -214,7 +228,7 @@ The user moves a cube around the board trying to knock balls into a cone
 					}
 				}
 			)
-
+		*/
 			// create the avatar
 			addPenguinOBJ();
 			avatarCam = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -262,10 +276,12 @@ The user moves a cube around the board trying to knock balls into a cone
 	}
 
 	function createStaticRoadBlock(){
-		var geometry = new THREE.BoxGeometry( 2, 10, 30);
-		var material = new THREE.MeshLambertMaterial( { color: 0x000000} );
+		var geometry = new THREE.BoxGeometry( 2, 15, 30);
+		var material = new THREE.MeshLambertMaterial( { color: 0xffffff} );
 		mesh = new Physijs.BoxMesh( geometry, material,0 );
 		mesh.castShadow = true;
+		mesh.rotateX(Math.PI/4);
+		mesh.rotateZ(Math.PI/4);
 		return mesh;
 	}
 
@@ -489,6 +505,162 @@ The user moves a cube around the board trying to knock balls into a cone
 						function(err){
 							console.log("error in loading: "+err);}
 					)
+		}
+
+		function addQM1(){
+			var loader = new THREE.OBJLoader();
+			loader.load("../models/QuestionMark.obj",
+					function ( obj) {
+						console.log("loading obj file");
+
+						var geometry = obj.children[0].geometry;
+						geometry.translate(0,0.2,0);
+						var material = new THREE.MeshLambertMaterial( { color: 0xccffff} );
+						var penguin1 = new Physijs.BoxMesh(geometry,material);
+						penguin1.scale.set(10,10,10);
+						penguin1.position.set(25,5,25);
+						penguin1.castShadow = true;
+						scene.add(penguin1);
+
+						penguin1.addEventListener( 'collision',
+							function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+								if (other_object==avatar && !investigated1){
+									soundEffect('good.wav');
+									gameState.score += 1;  // add one to the score
+									if (gameState.score==numPenguins) {
+										gameState.scene='youwon';
+									}
+									penguin1.position.set(0,-50,0);
+									penguin1.__dirtyPosition = true;
+									investigated1 = true;
+								}
+							}
+						)
+					},
+					function(xhr){
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+
+					function(err){
+						console.log("error in loading: "+err);
+					}
+				)
+		}
+
+		function addQM2(){
+			var loader = new THREE.OBJLoader();
+			loader.load("../models/QuestionMark.obj",
+					function ( obj) {
+						console.log("loading obj file");
+
+						var geometry = obj.children[0].geometry;
+						geometry.translate(0,0.2,0);
+						var material = new THREE.MeshLambertMaterial( { color: 0xccffff} );
+						var penguin2 = new Physijs.BoxMesh(geometry,material);
+						penguin2.scale.set(10,10,10);
+						penguin2.position.set(25,5,-25);
+						penguin2.castShadow = true;
+						scene.add(penguin2);
+
+						penguin2.addEventListener( 'collision',
+							function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+								if (other_object==avatar && !investigated2){
+									soundEffect('good.wav');
+									gameState.score += 1;  // add one to the score
+									if (gameState.score==numPenguins) {
+										gameState.scene='youwon';
+									}
+									penguin2.position.set(0,-50,0);
+									penguin2.__dirtyPosition = true;
+									investigated2 = true;
+								}
+							}
+						)
+					},
+					function(xhr){
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+
+					function(err){
+						console.log("error in loading: "+err);
+					}
+				)
+		}
+
+		function addQM3(){
+			var loader = new THREE.OBJLoader();
+			loader.load("../models/QuestionMark.obj",
+					function ( obj) {
+						console.log("loading obj file");
+
+						var geometry = obj.children[0].geometry;
+						geometry.translate(0,0.2,0);
+						var material = new THREE.MeshLambertMaterial( { color: 0xccffff} );
+						var penguin3 = new Physijs.BoxMesh(geometry,material);
+						penguin3.scale.set(10,10,10);
+						penguin3.position.set(-15,5,30);
+						penguin3.castShadow = true;
+						scene.add(penguin3);
+
+						penguin3.addEventListener( 'collision',
+							function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+								if (other_object==avatar && !investigated3){
+									soundEffect('good.wav');
+									gameState.score += 1;  // add one to the score
+									if (gameState.score==numPenguins) {
+										gameState.scene='youwon';
+									}
+									penguin3.position.set(0,-50,0);
+									penguin3.__dirtyPosition = true;
+									investigated3 = true;
+								}
+							}
+						)
+					},
+					function(xhr){
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+
+					function(err){
+						console.log("error in loading: "+err);
+					}
+				)
+		}
+
+		function addQM4(){
+			var loader = new THREE.OBJLoader();
+			loader.load("../models/QuestionMark.obj",
+					function ( obj) {
+						console.log("loading obj file");
+
+						var geometry = obj.children[0].geometry;
+						geometry.translate(0,0.2,0);
+						var material = new THREE.MeshLambertMaterial( { color: 0xccffff} );
+						var penguin4 = new Physijs.BoxMesh(geometry,material);
+						penguin4.scale.set(10,10,10);
+						penguin4.position.set(-25,5,-25);
+						penguin4.castShadow = true;
+						scene.add(penguin4);
+
+						penguin4.addEventListener( 'collision',
+							function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+								if (other_object==avatar && !investigated4){
+									soundEffect('good.wav');
+									gameState.score += 1;  // add one to the score
+									if (gameState.score==numPenguins) {
+										gameState.scene='youwon';
+									}
+									penguin4.position.set(0,-50,0);
+									penguin4.__dirtyPosition = true;
+									investigated4 = true;
+								}
+							}
+						)
+					},
+					function(xhr){
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );},
+
+					function(err){
+						console.log("error in loading: "+err);
+					}
+				)
 		}
 
     function createPenguinMesh(){
