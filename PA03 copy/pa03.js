@@ -528,7 +528,7 @@ The user moves a cube around the board trying to knock balls into a cone
 									soundEffect('good.wav');
 									gameState.score += 1;  // add one to the score
 									if (gameState.score==numPenguins) {
-										gameState.scene='youwon';
+										gameState.scene='decide';
 									}
 									penguin1.position.set(0,-50,0);
 									penguin1.__dirtyPosition = true;
@@ -567,7 +567,7 @@ The user moves a cube around the board trying to knock balls into a cone
 									soundEffect('good.wav');
 									gameState.score += 1;  // add one to the score
 									if (gameState.score==numPenguins) {
-										gameState.scene='youwon';
+										gameState.scene='decide';
 									}
 									penguin2.position.set(0,-50,0);
 									penguin2.__dirtyPosition = true;
@@ -606,7 +606,7 @@ The user moves a cube around the board trying to knock balls into a cone
 									soundEffect('good.wav');
 									gameState.score += 1;  // add one to the score
 									if (gameState.score==numPenguins) {
-										gameState.scene='youwon';
+										gameState.scene='decide';
 									}
 									penguin3.position.set(0,-50,0);
 									penguin3.__dirtyPosition = true;
@@ -645,7 +645,7 @@ The user moves a cube around the board trying to knock balls into a cone
 									soundEffect('good.wav');
 									gameState.score += 1;  // add one to the score
 									if (gameState.score==numPenguins) {
-										gameState.scene='youwon';
+										gameState.scene='decide';
 									}
 									penguin4.position.set(0,-50,0);
 									penguin4.__dirtyPosition = true;
